@@ -1,6 +1,6 @@
 {
   "name": "square-mcp-server",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP Server for Square API",
   "license": "APACHE-2.0",
   "author": "Block, Inc",
