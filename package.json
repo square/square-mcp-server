@@ -1,0 +1,45 @@
+{
+  "name": "@square/square-mcp-server",
+  "version": "0.1.0",
+  "description": "MCP Server for Square API",
+  "license": "APACHE-2.0",
+  "author": "Block, Inc",
+  "type": "module",
+  "bin": {
+    "square-mcp-server": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && shx chmod +x dist/*.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js start"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.5.0",
+    "commander": "^12.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "escape-html": "^1.0.3",
+    "express": "^5.0.1",
+    "form-data": "^4.0.0",
+    "node-fetch": "^3.3.2",
+    "open": "^10.1.0",
+    "yaml": "^2.7.0",
+    "yargs": "^17.7.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/escape-html": "^1.0.4",
+    "@types/express": "^5.0.0",
+    "@types/form-data": "^2.5.0",
+    "@types/node": "^22",
+    "@types/node-fetch": "^2.6.11",
+    "@types/yargs": "^17.0.33",
+    "shx": "^0.3.4",
+    "typescript": "^5.6.2"
+  }
+}
