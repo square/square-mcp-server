@@ -10,11 +10,41 @@ import YAML from "yaml";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { startServer } from "./server.js";
+import readline from 'node:readline';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-async function updateGooseConfig(): Promise<void> {
+// Function to prompt for ACCESS_TOKEN
+async function promptForAccessToken(): Promise<string> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  return new Promise((resolve) => {
+    rl.question('\n🔑 Enter your Square ACCESS_TOKEN: ', (token) => {
+      rl.close();
+      resolve(token.trim());
+    });
+  });
+}
+
+async function promptForSandboxMode(): Promise<boolean> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  return new Promise((resolve) => {
+    rl.question('\n🏝️  Use Square sandbox environment? (y/N): ', (answer) => {
+      rl.close();
+      resolve(answer.trim().toLowerCase() === 'y');
+    });
+  });
+}
+
+async function updateGooseConfig(accessToken: string, useSandbox: boolean): Promise<void> {
   try {
     console.log("\nUpdating Goose configuration...");
 
@@ -60,6 +90,10 @@ async function updateGooseConfig(): Promise<void> {
       args: ["square-mcp-server", "start"],
       enabled: true,
       type: "stdio",
+      env: {
+        ACCESS_TOKEN: accessToken,
+        SANDBOX: useSandbox ? "true" : "false",
+      }
     };
 
     // Write updated config
@@ -75,7 +109,7 @@ async function updateGooseConfig(): Promise<void> {
   }
 }
 
-async function updateClaudeConfig(): Promise<void> {
+async function updateClaudeConfig(accessToken: string, useSandbox: boolean): Promise<void> {
   try {
     console.log("\nUpdating Claude configuration...");
 
@@ -141,7 +175,10 @@ async function updateClaudeConfig(): Promise<void> {
     config.mcpServers["mcp_square_api"] = {
       command: "npx",
       args: ["square-mcp-server", "start"],
-      env: {},
+      env: {
+        ACCESS_TOKEN: accessToken,
+        SANDBOX: useSandbox ? "true" : "false",
+      }
     };
 
     // Write updated config
@@ -184,9 +221,22 @@ async function main() {
     .usage("$0 [cmd] [args]")
     .command("install", "Install Square MCP Server in Goose and Claude", {}, async () => {
       console.log("\n🚀 Starting Square MCP Server installation...\n");
+      
+      console.log("This will configure the Square MCP Server for use with Claude and Goose.");
 
-      await updateClaudeConfig();
-      await updateGooseConfig();
+      // Prompt for Square access token
+      const accessToken = await promptForAccessToken();
+      if (!accessToken) {
+        console.warn("\nNo access token provided. Server will not be able to access Square API.");
+        console.warn("You can set ACCESS_TOKEN environment variable when starting the server manually.");
+      }
+
+      // Prompt for sandbox mode
+      const useSandbox = await promptForSandboxMode();
+      console.log(`\n${useSandbox ? '🏝️  Using sandbox environment' : '🌎 Using production environment'}`);
+
+      await updateClaudeConfig(accessToken, useSandbox);
+      await updateGooseConfig(accessToken, useSandbox);
 
       const gooseUrl = await generateGooseUrl();
 
