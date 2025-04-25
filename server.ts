@@ -184,7 +184,7 @@ server.tool(
   {
     service: z.string().describe("The Square API service category (e.g., 'catalog', 'payments')"),
     method: z.string().describe("The API method to call (e.g., 'list', 'create')"),
-    request: z.any().optional().describe("The request object for the API call")
+    request: z.object({}).passthrough().optional().describe("The request object for the API call.")
   },
   async (params) => {
     try {
