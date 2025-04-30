@@ -2,6 +2,10 @@
 
 This project follows the [Model Context Protocol](https://modelcontextprotocol.com/) standard, allowing AI assistants to interact with Square's connect API.
 
+<a href="https://glama.ai/mcp/servers/@square/square-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@square/square-mcp-server/badge" alt="Square Model Context Protocol Server MCP server" />
+</a>
+
 ## Quick Start
 
 Get up and running with the Square MCP server using npx:
