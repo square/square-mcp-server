@@ -19,6 +19,16 @@ npx /path/to/project/square-mcp-server
 
 Replace `YOUR_SQUARE_ACCESS_TOKEN` with your actual Square access token. You can obtain your access token by following the guide at [Square Access Tokens](https://developer.squareup.com/docs/build-basics/access-tokens). You can also set environment variables before running the command.
 
+## Remote MCP Server
+
+Square now offers a hosted remote MCP server at:
+
+```
+https://mcp.squareup.com/sse
+```
+
+The remote MCP is recommended as it uses OAuth authentication, allowing you to log in with your Square account directly without having to create or manage access tokens manually.
+
 ## Configuration Options
 
 | Environment Variable | Purpose | Example |
@@ -35,6 +45,13 @@ Replace `YOUR_SQUARE_ACCESS_TOKEN` with your actual Square access token. You can
 
 To configure the Square MCP Server with [Goose](https://block.github.io/goose/):
 
+#### Remote MCP
+To install the Square remote MCP in Goose, click this URL on a computer where Goose is installed:
+
+[goose://extension?cmd=npx&arg=mcp-remote&arg=https%3A%2F%2Fmcp.squareup.com%2Fsse&id=square_mcp_production_remote&name=Square%20MCP%20Remote&description=Square%20Production%20MCP%20Remote](goose://extension?cmd=npx&arg=mcp-remote&arg=https%3A%2F%2Fmcp.squareup.com%2Fsse&id=square_mcp_production_remote&name=Square%20MCP%20Remote&description=Square%20Production%20MCP%20Remote)
+
+Or copy and paste the URL into your browser's address bar.
+
 ```bash
 # Automatic installation
 npx square-mcp-server install
@@ -49,15 +66,27 @@ The `install` command automatically updates your Goose configuration.
 
 For Claude Desktop integration, see the [Model Context Protocol Quickstart Guide](https://modelcontextprotocol.io/quickstart/user). Add this configuration to your `claude_desktop_config.json`:
 
+#### Remote MCP
 ```json
 {
   "mcpServers": {
     "mcp_square_api": {
       "command": "npx",
-      "args": [
-        "square-mcp-server",
-        "start"
-      ],
+      "args": ["mcp-remote", "https://mcp.squareup.com/sse"]
+    }
+  }
+}
+```
+
+This approach allows you to authenticate directly with your Square account credentials without needing to manage access tokens.
+
+#### Local MCP
+```json
+{
+  "mcpServers": {
+    "mcp_square_api": {
+      "command": "npx",
+      "args": ["square-mcp-server", "start"],
       "env": {
         "ACCESS_TOKEN": "YOUR_SQUARE_ACCESS_TOKEN",
         "SANDBOX": "true"
