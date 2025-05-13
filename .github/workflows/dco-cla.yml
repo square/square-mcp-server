@@ -1,0 +1,7 @@
+name: DCO/CLA Verification
+on:
+  pull_request:
+  push:
+jobs:
+  dco-cla:
+    uses: block/ospo/.github/workflows/dco-cla.yaml@main
