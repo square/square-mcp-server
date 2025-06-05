@@ -176,6 +176,78 @@ export const LaborMethods: { [key: string]: ApiMethodInfo } = {
     isMultipart: false,
     originalName: "UpdateWorkweekConfig",
     isWrite: true
+  } as ApiMethodInfo,
+
+  createScheduledShift: {
+    description: "Creates a scheduled shift by providing draft shift details such as job ID, team member assignment, and start and end times. The following `draft_shift_details` fields are required: `location_id`, `job_id`, `start_at`, `end_at`",
+    method: "post",
+    path: "/v2/labor/scheduled-shifts",
+    pathParams: [],
+    queryParams: [],
+    requestType: "CreateScheduledShiftRequest",
+    isMultipart: false,
+    originalName: "CreateScheduledShift",
+    isWrite: true
+  } as ApiMethodInfo,
+
+  bulkPublishScheduledShifts: {
+    description: "Publishes 1 - 100 scheduled shifts. Request body requires a 'scheduled_shifts' field containing a map/object (NOT an array) where: keys are scheduled shift IDs, values are objects with 'version' field. Optional 'scheduled_shift_notification_audience' field controls email notifications. The minimum `start_at` and maximum `end_at` timestamps of all shifts must fall within a two-week period.",
+    method: "post",
+    path: "/v2/labor/scheduled-shifts/bulk-publish",
+    pathParams: [],
+    queryParams: [],
+    requestType: "BulkPublishScheduledShiftsRequest",
+    isMultipart: false,
+    originalName: "BulkPublishScheduledShifts",
+    isWrite: true
+  } as ApiMethodInfo,
+
+  searchScheduledShifts: {
+    description: "Returns a paginated list of `ScheduledShift` records for a business. The list can be filtered by location IDs, team member IDs, and time range.",
+    method: "post",
+    path: "/v2/labor/scheduled-shifts/search",
+    pathParams: [],
+    queryParams: [],
+    requestType: "SearchScheduledShiftsRequest",
+    isMultipart: false,
+    originalName: "SearchScheduledShifts",
+    isWrite: false
+  } as ApiMethodInfo,
+
+  retrieveScheduledShift: {
+    description: "Returns the details of the `ScheduledShift` specified by the given ID.",
+    method: "get",
+    path: "/v2/labor/scheduled-shifts/{id}",
+    pathParams: [{"name":"id","type":"string","description":"The UUID for the `ScheduledShift` being retrieved."}],
+    queryParams: [],
+    requestType: "RetrieveScheduledShiftRequest",
+    isMultipart: false,
+    originalName: "RetrieveScheduledShift",
+    isWrite: false
+  } as ApiMethodInfo,
+
+  updateScheduledShift: {
+    description: "Updates an existing `ScheduledShift` defined by the given ID. You cannot add or remove breaks when updating a `ScheduledShift`.",
+    method: "put",
+    path: "/v2/labor/scheduled-shifts/{id}",
+    pathParams: [{"name":"id","type":"string","description":"The ID of the object being updated."}],
+    queryParams: [],
+    requestType: "UpdateScheduledShiftRequest",
+    isMultipart: false,
+    originalName: "UpdateScheduledShift",
+    isWrite: true
+  } as ApiMethodInfo,
+
+  publishScheduledShift: {
+    description: "Publishes the `ScheduledShift` by setting the `published_shift_details` field to the same value as the `draft_shift_details` field.",
+    method: "post",
+    path: "/v2/labor/scheduled-shifts/{id}/publish",
+    pathParams: [{"name":"id","type":"string","description":"The UUID for the `ScheduledShift` being published."}],
+    queryParams: [],
+    requestType: "PublishScheduledShiftRequest",
+    isMultipart: false,
+    originalName: "PublishScheduledShift",
+    isWrite: true
   } as ApiMethodInfo
 };
 
@@ -573,6 +645,147 @@ export const LaborHandlers = {
     if (queryString) {
       url = `${url}?${queryString}`;
     }
+
+    // Make regular JSON request
+    const response = await fetch(`${baseUrl}${url}`, {
+      method: methodInfo.method.toUpperCase(),
+      headers: getRequestHeaders(accessToken),
+      ...(Object.keys(args).length > 0 && ['post', 'put', 'patch'].includes(methodInfo.method.toLowerCase()) && { body: JSON.stringify(args) })
+    });
+    return await handleResponse(response)
+  },
+
+  createScheduledShift: async (accessToken: string, args: Record<string, unknown>) => {
+    const methodInfo = LaborMethods.createScheduledShift;
+    
+    // Simple endpoint with no path or query parameters
+    const url = methodInfo.path;
+
+    // Make regular JSON request
+    const response = await fetch(`${baseUrl}${url}`, {
+      method: methodInfo.method.toUpperCase(),
+      headers: getRequestHeaders(accessToken),
+      ...(Object.keys(args).length > 0 && ['post', 'put', 'patch'].includes(methodInfo.method.toLowerCase()) && { body: JSON.stringify(args) })
+    });
+    return await handleResponse(response)
+  },
+
+  bulkPublishScheduledShifts: async (accessToken: string, args: Record<string, unknown>) => {
+    const methodInfo = LaborMethods.bulkPublishScheduledShifts;
+    
+    // Simple endpoint with no path or query parameters
+    const url = methodInfo.path;
+
+    // Make regular JSON request
+    const response = await fetch(`${baseUrl}${url}`, {
+      method: methodInfo.method.toUpperCase(),
+      headers: getRequestHeaders(accessToken),
+      ...(Object.keys(args).length > 0 && ['post', 'put', 'patch'].includes(methodInfo.method.toLowerCase()) && { body: JSON.stringify(args) })
+    });
+    return await handleResponse(response)
+  },
+
+  searchScheduledShifts: async (accessToken: string, args: Record<string, unknown>) => {
+    const methodInfo = LaborMethods.searchScheduledShifts;
+    
+    // Simple endpoint with no path or query parameters
+    const url = methodInfo.path;
+
+    // Make regular JSON request
+    const response = await fetch(`${baseUrl}${url}`, {
+      method: methodInfo.method.toUpperCase(),
+      headers: getRequestHeaders(accessToken),
+      ...(Object.keys(args).length > 0 && ['post', 'put', 'patch'].includes(methodInfo.method.toLowerCase()) && { body: JSON.stringify(args) })
+    });
+    return await handleResponse(response)
+  },
+
+  retrieveScheduledShift: async (accessToken: string, args: Record<string, unknown>) => {
+    const methodInfo = LaborMethods.retrieveScheduledShift;
+    
+    // Extract path parameters
+    const pathParams: Record<string, string> = {};
+    methodInfo.pathParams.forEach(param => {
+      const value = args[param.name];
+      if (value !== undefined) {
+        pathParams[param.name] = String(value);
+        delete args[param.name];
+      } else if (param.required) {
+        throw new Error(`Missing required path parameter: ${param.name}`);
+      }
+    });
+
+    // Build URL with path parameters
+    let url = methodInfo.path;
+    
+    // Replace path parameters
+    Object.entries(pathParams).forEach(([key, value]) => {
+      url = url.replace(`{${key}}`, encodeURIComponent(value));
+    });
+
+    // Make regular JSON request
+    const response = await fetch(`${baseUrl}${url}`, {
+      method: methodInfo.method.toUpperCase(),
+      headers: getRequestHeaders(accessToken),
+      ...(Object.keys(args).length > 0 && ['post', 'put', 'patch'].includes(methodInfo.method.toLowerCase()) && { body: JSON.stringify(args) })
+    });
+    return await handleResponse(response)
+  },
+
+  updateScheduledShift: async (accessToken: string, args: Record<string, unknown>) => {
+    const methodInfo = LaborMethods.updateScheduledShift;
+    
+    // Extract path parameters
+    const pathParams: Record<string, string> = {};
+    methodInfo.pathParams.forEach(param => {
+      const value = args[param.name];
+      if (value !== undefined) {
+        pathParams[param.name] = String(value);
+        delete args[param.name];
+      } else if (param.required) {
+        throw new Error(`Missing required path parameter: ${param.name}`);
+      }
+    });
+
+    // Build URL with path parameters
+    let url = methodInfo.path;
+    
+    // Replace path parameters
+    Object.entries(pathParams).forEach(([key, value]) => {
+      url = url.replace(`{${key}}`, encodeURIComponent(value));
+    });
+
+    // Make regular JSON request
+    const response = await fetch(`${baseUrl}${url}`, {
+      method: methodInfo.method.toUpperCase(),
+      headers: getRequestHeaders(accessToken),
+      ...(Object.keys(args).length > 0 && ['post', 'put', 'patch'].includes(methodInfo.method.toLowerCase()) && { body: JSON.stringify(args) })
+    });
+    return await handleResponse(response)
+  },
+
+  publishScheduledShift: async (accessToken: string, args: Record<string, unknown>) => {
+    const methodInfo = LaborMethods.publishScheduledShift;
+    
+    // Extract path parameters
+    const pathParams: Record<string, string> = {};
+    methodInfo.pathParams.forEach(param => {
+      const value = args[param.name];
+      if (value !== undefined) {
+        pathParams[param.name] = String(value);
+        delete args[param.name];
+      } else if (param.required) {
+        throw new Error(`Missing required path parameter: ${param.name}`);
+      }
+    });
+
+    // Build URL with path parameters
+    let url = methodInfo.path;
+    
+    // Replace path parameters
+    Object.entries(pathParams).forEach(([key, value]) => {
+      url = url.replace(`{${key}}`, encodeURIComponent(value));
+    });
 
     // Make regular JSON request
     const response = await fetch(`${baseUrl}${url}`, {
