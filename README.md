@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/square-square-mcp-server-badge.png)](https://mseep.ai/app/square-square-mcp-server)
+
 # Square Model Context Protocol Server (Beta)
 
 This project follows the [Model Context Protocol](https://modelcontextprotocol.com/) standard, allowing AI assistants to interact with Square's connect API.
