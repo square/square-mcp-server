@@ -177,14 +177,16 @@ export const serviceHandlersMap: ServiceHandlers = {
 };
 
 // Register unified Square API tool
-server.tool(
+server.registerTool(
   "make_api_request",
-  `Unified tool for all Square API operations. Be sure to get types before calling. Available services:
-  ${Object.keys(serviceMethodsMap).map(name => name.toLowerCase()).join(", ")}.`,
   {
-    service: z.string().describe("The Square API service category (e.g., 'catalog', 'payments')"),
-    method: z.string().describe("The API method to call (e.g., 'list', 'create')"),
-    request: z.object({}).passthrough().optional().describe("The request object for the API call.")
+    description: `Unified tool for all Square API operations. Be sure to get types before calling. Available services:
+  ${Object.keys(serviceMethodsMap).map(name => name.toLowerCase()).join(", ")}.`,
+    inputSchema: {
+      service: z.string().describe("The Square API service category (e.g., 'catalog', 'payments')"),
+      method: z.string().describe("The API method to call (e.g., 'list', 'create')"),
+      request: z.object({}).passthrough().optional().describe("The request object for the API call.")
+    }
   },
   async (params) => {
     try {
@@ -237,12 +239,14 @@ server.tool(
   });
 
 // Register get_request_type tool
-server.tool(
+server.registerTool(
   "get_type_info",
-  "Get type information for a Square API method. You must call this before calling the make_api_request tool.",
   {
-    service: z.string().describe("The Square API service category (e.g., 'catalog', 'payments')"),
-    method: z.string().describe("The API method to call (e.g., 'list', 'create')")
+    description: "Get type information for a Square API method. You must call this before calling the make_api_request tool.",
+    inputSchema: {
+      service: z.string().describe("The Square API service category (e.g., 'catalog', 'payments')"),
+      method: z.string().describe("The API method to call (e.g., 'list', 'create')")
+    }
   },
   async (params) => {
     try {
@@ -288,11 +292,13 @@ server.tool(
 );
 
 // register service info tool
-server.tool(
+server.registerTool(
   "get_service_info",
-  "Get information about a Square API service. Call me before trying to get type info",
   {
-    service: z.string().describe("The Square API service category (e.g., 'catalog', 'payments')")
+    description: "Get information about a Square API service. Call me before trying to get type info",
+    inputSchema: {
+      service: z.string().describe("The Square API service category (e.g., 'catalog', 'payments')")
+    }
   },
   async (params) => {
     try {
