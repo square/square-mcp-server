@@ -31,7 +31,7 @@ export const RefundsMethods: { [key: string]: ApiMethodInfo } = {
     requestType: "RefundPaymentRequest",
     isMultipart: false,
     originalName: "RefundPayment",
-    isWrite: false
+    isWrite: true
   } as ApiMethodInfo,
 
   getPayment: {
