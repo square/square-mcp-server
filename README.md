@@ -100,6 +100,14 @@ This approach allows you to authenticate directly with your Square account crede
 }
 ```
 
+### Gamut Integration
+
+Connect the Square MCP Server to a [Gamut](https://www.gamut.so/mcp/payments-finance/square) agent:
+
+1. In your Gamut agent, go to **Connections** and click **Add Connection**.
+2. Search for **Square** and click **+** to add it.
+3. Authenticate with your Square account when prompted.
+
 ## Tool Reference
 
 The Square MCP Server provides a streamlined set of tools for interacting with Square APIs:
