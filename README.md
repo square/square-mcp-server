@@ -2,7 +2,7 @@
 
 This project follows the [Model Context Protocol](https://modelcontextprotocol.com/) standard, allowing AI assistants to interact with Square's connect API.
 
-> **Most people should use the hosted server.** Square runs a remote MCP server at `https://mcp.squareup.com/mcp` with OAuth sign-in; see the [Square MCP documentation](https://developer.squareup.com/docs/mcp) for setup with your AI assistant. This repository is the local, self-hosted server: a starting point if you want to run your own copy or customize it. It is maintained on a best-effort basis and may lag behind the hosted server.
+> **Most people should use the hosted server.** Square runs a remote MCP server at `https://mcp.squareup.com/mcp` with OAuth sign-in; see the [Square MCP documentation](https://developer.squareup.com/docs/mcp) for setup with your AI assistant. This repository is the local, self-hosted server: a starting point if you want to run your own copy or customize it.
 
 <a href="https://glama.ai/mcp/servers/@square/square-mcp-server">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@square/square-mcp-server/badge" alt="Square Model Context Protocol Server MCP server" />
@@ -10,7 +10,7 @@ This project follows the [Model Context Protocol](https://modelcontextprotocol.c
 
 ## Quick Start
 
-Get up and running with the Square MCP server using npx:
+Get up and running with the local server using npx. This runs the server on your own machine with your own access token; for the hosted server, see the note above.
 
 ```bash
 # Basic startup
@@ -33,7 +33,7 @@ Square offers a hosted remote MCP server at:
 https://mcp.squareup.com/mcp
 ```
 
-The remote server is recommended: it uses OAuth, so you sign in with your Square account instead of creating and managing access tokens. Setup guides for Claude, ChatGPT, Goose and other assistants are in the [Square MCP documentation](https://developer.squareup.com/docs/mcp). The older `https://mcp.squareup.com/sse` endpoint still works for clients that need SSE.
+The remote server is recommended: it uses OAuth, so you sign in with your Square account instead of creating and managing access tokens. Setup guides for Claude, ChatGPT, Goose and other assistants are in the [Square MCP documentation](https://developer.squareup.com/docs/mcp). The older `https://mcp.squareup.com/sse` endpoint is still served for existing SSE configurations.
 
 ## Configuration Options
 
@@ -54,9 +54,11 @@ To configure the Square MCP Server with [Goose](https://block.github.io/goose/):
 #### Remote MCP
 To install the Square remote MCP in Goose, click this URL on a computer where Goose is installed:
 
-[goose://extension?cmd=npx&arg=mcp-remote&arg=https%3A%2F%2Fmcp.squareup.com%2Fsse&id=square_mcp_production_remote&name=Square%20MCP%20Remote&description=Square%20Production%20MCP%20Remote](goose://extension?cmd=npx&arg=mcp-remote&arg=https%3A%2F%2Fmcp.squareup.com%2Fsse&id=square_mcp_production_remote&name=Square%20MCP%20Remote&description=Square%20Production%20MCP%20Remote)
+[goose://extension?cmd=npx&arg=mcp-remote&arg=https%3A%2F%2Fmcp.squareup.com%2Fmcp&id=square_mcp_production_remote&name=Square%20MCP%20Remote&description=Square%20Production%20MCP%20Remote](goose://extension?cmd=npx&arg=mcp-remote&arg=https%3A%2F%2Fmcp.squareup.com%2Fmcp&id=square_mcp_production_remote&name=Square%20MCP%20Remote&description=Square%20Production%20MCP%20Remote)
 
 Or copy and paste the URL into your browser's address bar.
+
+The commands below configure the local server (`npx square-mcp-server start`), not the hosted one:
 
 ```bash
 # Automatic installation
@@ -78,7 +80,7 @@ For Claude Desktop integration, see the [Model Context Protocol Quickstart Guide
   "mcpServers": {
     "mcp_square_api": {
       "command": "npx",
-      "args": ["mcp-remote", "https://mcp.squareup.com/sse"]
+      "args": ["mcp-remote", "https://mcp.squareup.com/mcp"]
     }
   }
 }
