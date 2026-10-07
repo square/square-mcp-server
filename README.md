@@ -2,7 +2,7 @@
 
 This project follows the [Model Context Protocol](https://modelcontextprotocol.com/) standard, allowing AI assistants to interact with Square's connect API.
 
-> **Most people should use the hosted server.** Square runs a remote MCP server at `https://mcp.squareup.com/mcp` with OAuth sign-in; see the [Square MCP documentation](https://developer.squareup.com/docs/mcp) for setup with your AI assistant. This repository is the local, self-hosted server: a starting point if you want to run your own copy or customize it.
+> **Most people should use the hosted server.** Square runs a remote MCP server at `https://mcp.squareup.com/mcp` with OAuth sign-in; see the [Square MCP documentation](https://developer.squareup.com/docs/mcp) for setup with your AI assistant. This repository is the local, self-hosted server: a starting point if you want to run your own copy. Code changes go through the generator described under Contributing.
 
 <a href="https://glama.ai/mcp/servers/@square/square-mcp-server">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@square/square-mcp-server/badge" alt="Square Model Context Protocol Server MCP server" />
